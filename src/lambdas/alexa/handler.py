@@ -1,5 +1,5 @@
 import random
-
+from homophones import homophones
 
 def lambda_handler(event, context):
     if event["request"]["type"] == "LaunchRequest":
@@ -77,7 +77,11 @@ def get_example(example_type, attrib):
     return (examples[example_type][idx], used)
 
 
-def handle_verify(deep, profound, **kwargs):
+def handle_verify(deep: str, profound: str, **kwargs):
+
+    if deep.lower() in homophones or profound.lower() in homophones:
+        return create_response("I can't help you with homophones, they are ambiguous", True, kwargs["session"])
+
     deep = is_deep(deep)
     profound = not is_deep(profound)
 

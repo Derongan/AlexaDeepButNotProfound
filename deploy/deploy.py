@@ -20,12 +20,6 @@ EXCLUDED_FILES = [
     "setup_db.py"
 ]
 
-EXCLUDED_DIRS_API = [
-    "alexa",
-    "requests"
-]
-
-
 EXCLUDED_DIRS_ALEXA = []
 
 ALEXA_LIBS = []
