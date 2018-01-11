@@ -19,7 +19,8 @@ def lambda_handler(event, context):
 
     return finish_handle({
                              "VerifyIntent": handle_verify,
-                             "ExampleIntent": handle_example
+                             "ExampleIntent": handle_example,
+                             "AMAZON.HelpIntent": handle_help
                          }.get(intent_type, error)(**kwargs), not new_session)
 
 
@@ -40,6 +41,10 @@ def handle_example(**kwargs):
     k, v = get_example(example_type, kwargs["session"]["example"])
     kwargs["session"]["example"][example_type] = v
     return create_response(k, True, kwargs["session"])
+
+
+def handle_help(**kwargs):
+    return create_response("Your goal is to figure out the rule. You can ask me for an example, or make a guess")
 
 
 def get_example(example_type, attrib):
@@ -89,10 +94,6 @@ def handle_verify(deep: str, profound: str, **kwargs):
         kwargs["session"]["fail"] = 0
         kwargs["session"]["success"] = kwargs["session"].get("success", 0) + 1
         return create_response("That sounds right!", True, kwargs["session"])
-    # elif(deep and not profound):
-    #    return create_response("Profound shouln't be deep bro")
-    # elif(not deep and profound):
-    #    return create_response("Deep shouldn't be profound bruv")
     else:
         kwargs["session"]["fail"] = kwargs["session"].get("fail", 0) + 1
         return create_response("Not quite", True, kwargs["session"])
